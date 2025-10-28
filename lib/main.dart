@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_demo/pages/animation/animation_test.dart';
 import 'package:flutter_demo/routes/routes.dart';
 
 void main() {
@@ -31,13 +32,11 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
+  List<Pages> pages = [
+    Pages(
+      route: "/animation/animationTest",
+    ),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -46,25 +45,32 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
-        ),
+      body: ListView.builder(
+        itemCount: pages.length,
+        itemBuilder: (context, index) {
+          return GestureDetector(
+            onTap: () {
+              Navigator.pushNamed(context, pages[index].route);
+            },
+            child: pages[index].builder != null
+                ? pages[index].builder!(context, index)
+                : ListTile(
+                    title: Text(pages[index].route),
+                  ),
+          );
+        },
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
+}
+
+class Pages {
+  /// 路由
+  final String route;
+  final NullableIndexedWidgetBuilder? builder;
+
+  Pages({
+    required this.route,
+    this.builder,
+  });
 }
