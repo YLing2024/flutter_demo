@@ -34,6 +34,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   List<Pages> pages = [
     Pages(
+      name: "Animation Test",
       route: "/animation/animationTest",
     ),
   ];
@@ -55,7 +56,7 @@ class _MyHomePageState extends State<MyHomePage> {
             child: pages[index].builder != null
                 ? pages[index].builder!(context, index)
                 : ListTile(
-                    title: Text(pages[index].route),
+                    title: Text(pages[index].name),
                   ),
           );
         },
@@ -65,12 +66,15 @@ class _MyHomePageState extends State<MyHomePage> {
 }
 
 class Pages {
+  final String name;
+
   /// 路由
   final String route;
   final NullableIndexedWidgetBuilder? builder;
 
   Pages({
     required this.route,
+    required this.name,
     this.builder,
   });
 }
